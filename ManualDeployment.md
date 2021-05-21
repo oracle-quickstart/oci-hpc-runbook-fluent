@@ -206,6 +206,7 @@ systemctl enable gdm --now
 	- c. Source CIDR: 0.0.0.0/0
 	- d. IP Protocol: TCP
 	- e. Source Port Range: All
+	- f. Destination Port Range: 5901
 	
 Note: The standard VNC port is 5900 plus a display number (for example, 5901 for :1, 5902 for :2)
 
@@ -215,8 +216,6 @@ sudo firewall-cmd --zone=public --permanent --add-port=5901/tcp
 sudo firewall-cmd --reload
 ```
 15. Open TurboVNC or TigerVNC client. Enter the IP address connection as :1
-
-	f. Destination Port Range: 5901
 
 ## Accessing a VNC
 We will connect through an SSH tunnel to the instance. On your machine, connect using ssh PORT below will be the number that results from 5900 + N. N is the display number, if the output for N was 1, PORT is 5901, if the output was 9, PORT is 5909 public_ip is the public IP address of the headnode, which is running the VNC server. If you used the previous instructions, port will be 5901
