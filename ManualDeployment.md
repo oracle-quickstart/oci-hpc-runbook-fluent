@@ -4,6 +4,17 @@
 - [Launch Cluster Network Steps](#launch-cluster-network-steps)
 - [Creation of Cluster Network through Marketplace](#creation-of-cluster-network-through-marketplace)
 - [Creation of Cluster Network through Manual Configuration](#creation-of-cluster-network-through-manual-configuration)
+- [Access your Cluster](#access-your-cluster)
+- [Configure Visualization](#configure-visualization)
+- [Setting Up a VNC on your bastion](#setting-up-a-vcn-on-your-bastion)
+- [Add a GPU instance](#add-a-gpu-instance)
+- [Accessing a VNC](#accessing-a-vcn)
+- [Installing Fluent](#installing-fluent)
+- [Adding specific libraries](#adding-specific-libraries)
+- [Download the binaries](#download-the-binaries)
+- [Install](#install)
+- [Running Fluent](#running-fluent)
+- [Benchmark Example](#benchmark-example)
 
 ## Launch Cluster Network Steps
 There are many ways to launch an HPC Cluster Network, this solutions guide will cover two different methods:
@@ -20,41 +31,79 @@ Marketplace holds applications and images that can be deployed with our infrastr
 <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compartments_signin.png" height="250">
 3. Verify the version of the HPC Cluster image and then select the Compartment where the cluster will be launched. Accept the terms and conditions, then Launch Stack.
 
-
 4. Fill out the remaing details of the stack:
-	- i. Select the desired <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/availability_domain.png" height="47"> for the compute shapes and the bastion.
-	- ii. Copy-paste your <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/ssh_key.png" height="41">
-	- iii. Type in the <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute_instances.png" height="39"> for the cluster
+	- i. Select the desired <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/availability_domain.png" height="56"> for 	the compute shapes and the bastion.
+	- ii. Copy-paste your <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/ssh_key.png" height="50">
+	- iii. Type in the <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute_instances.png" height="46"> for the 		cluster
 	- iv. Uncheck Install OpenFOAM
 	- v. If you need more than 6TB of Shared disk space, check GlusterFS and select how many servers you would need. (6TB per server)
-6. Click <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/create.png" height="30">.
-7. Navigate to <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/tf_actions.png" height="24"> then click Apply. This will launch the CN provisioning.
-8. Wait until the job shows <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/succeeded.png" height="38"> then navigate to <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/outputs.png" height="34"> to obtain the bastion and compute node private IP’s <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/bastion_private_ip.png" height="37">.
+5. Click <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/create.png" height="35">.
+6. Navigate to <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/tf_actions.png" height="28"> then click Apply. This will launch the CN provisioning.
+7. Wait until the job shows <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/succeeded.png" height="42"> then navigate to <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/outputs.png" height="38"> to obtain the bastion and compute node private IP’s <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/bastion_private_ip.png" height="50">.
 
 ### Creation of Cluster Network through Manual Configuration
 Marketplace holds applications and images that can be deployed with our infrastructure. For customers that want to use Oracle Linux, you can manually create a cluster network as follows:
-1. Select the OCI Region <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/region_console.png" height="29"> on the top right.
-2. In the main menu, select <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/networking.png" height="28"> and <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/vcn.png" height="30">
-3. Click on <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/start_vcn_wizard.png" height="32">, and select <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/vcn_with_internet_connectivity.png" height="38">
+1. Select the OCI Region on the top right.
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/region3.png" height="150">
+
+2. In the main menu, select **Networking** and **Virtual Cloud Network**
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/vcn2.png" height="200"> 
+
+3. Click on <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/start_vcn_wizard.png" height="32">, and select **VCN with Internet Connectivity**.
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/vcn_wizard.png" height="270">
+
 4. Choose a name, the right compartment, and use 172.16.0.0/16 as VCN CIDR, 172.16.0.0/24 for Public Subnet and 172.16.1.0/24 for Private Subnet
-5. In the main menu, select <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute.png" height="31">, <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/instances.png" height="29">, then <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/create_instances.png" height="31">
-6. Change the Image <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/change_image.png" height="30"> and select the Oracle Image tab <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/oracle_images.png" height="38">, select <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/oracle_linux_7.png" height="32">
-7. Select the Availability Domain <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/ad.png" height="50"> in which you can spin up a BM.HPC2.36 instance
-8. Change the shape to <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/shape.png" height="60"> under Bare Metal and Specialty
+5. In the main menu, select **Compute, Instances, then Create Instance**.
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute_instances_console.png" height="180">.
+
+6. Change the Image and select the **Oracle Image** tab, select **Oracle Linux 7 - HPC Cluster Networking Image**.
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/oracle_linux_7.png" height="45">
+
+7. Select the **Availability Domain** in which you can spin up a BM.HPC2.36 instance
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/ad.png" height="70">
+
+8. Change the **shape** to BM.HPC2.36 under Bare Metal and Specialty
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/shape.png" height="80">
+
 9. Select the VCN and the public subnet you created.
-10. Add a public key <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/paste_public_keys.png" height="30"> to connect to the instance. This key will be used on all compute instances.
-11. Once the machine is up, click on the created instance. Under <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/more_actions.png" height="30">, select <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/create_instance_configuration.png" height="25">. You can now <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/terminate.png" height="28"> the instance under More Actions.
-12. In the main menu, select <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute.png" height="25">, then <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/cluster_networks.png" height="25">
-13. Click <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/create_cluster_network.png" height="25"> and fill in all the options. Use the VCN, private subnet and instance configuration that you just created. Select the AD in which you can launch BM.HPC2.36 instances.
+10. Add a public key to connect to the instance. This key will be used on all compute instances.
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/key.png" height="150">
+
+11. Once the machine is up, click on the created instance. Under **More Actions**, select **Create Instance Configuration**. You can now **terminate** the instance under **More Actions**.
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/machine_instance.png" height="280">
+
+12. In the main menu, select **Compute**, then **Cluster Networks**
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/cluster_networks_console.png" height="210">
+
+13. Click **Create Cluster Network** and fill in all the options. Use the VCN, private subnet and instance configuration that you just created. Select the AD in which you can launch BM.HPC2.36 instances.
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/create_cluster.png" height="170">
+
 14. Launch the cluster network.
-15. While it is loading, create another instance under <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/main_menu.png" height="25">, <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute.png" height="25"> and <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/instances.png" height="25">.
+
+15. While it is loading, create another instance under **Main Menu**, **Compute** and **Instances**.
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute_instances_console.png" height="170">
+
 16. Put it in the public subnet that was just created, using your public key and shape should be VM.Standard2.1 or similar. This will be the bastion that we will use to connect to the cluster.
 17. SCP the key to the cluster on the bastion at /home/opc/.ssh/cluster_key and copy it also to /home/opc/.ssh/id_rsa
 18. Install the Provisioning Tool on the bastion via the following command:
 ``` 
 sudo rpm -Uvh https://objectstorage.us-ashburn-1.oraclecloud.com/p/aOr79eUYz834A23on3Vbe8S9W4gyi1bsuOL0T7dlxrkkXlmkUTMqasJYpfRMTAnu/n/hpc/b/rpms/o/common/oci-hpc-provision-20190905-63.7.2.x86_64.rpm 
 ```
-19. Navigate to <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute.png" height="25"> then <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/instance_pools.png" height="25"> in the Console and collect all the IP addresses for the cluster network pool. Or use this command on the bastion if you have nothing else running on your private subnet.
+19. Navigate to **Compute** then **Instance Pools** in the Console and collect all the IP addresses for the cluster network pool. Or use this command on the bastion if you have nothing else running on your private subnet.
+ 
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute_instance_pools.png" height="180">
+
 ``` 
 for i in `nmap -sL Private_Subnet_CIDR | grep "Nmap scan report for" | grep ")" | awk '{print $6}'`;do echo ${i:1:-1} >> /tmp/ips; done 
 ```
@@ -93,8 +142,17 @@ sudo systemctl enable vncserver@:1.service
 ```
 ### Add a GPU instance
 The below steps are taken Using OpenGL to Enhance GPU Use cases on OCI - refer to the blog for more details.
-1. Within the Console, navigate to <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute.png" height="25"> then <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/instances.png" height="25">.
-2. Create a Compute Instance for the Visualization Node: a. Select the desired AD b. Select the desired GPU shape (either VM or BM) c. Specify a GPU-compatible Oracle Linux image The latest Oracle Linux Image will automatically be GPU enabled. d. Select the Cluster Network VCN and Public Subnet e. Copy-paste your public ssh key f. Click Create.
+1. Within the Console, navigate to Compute then Instances.
+
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/compute_instances_console.png" height="150">
+
+2. Create a Compute Instance for the Visualization Node: 
+- a. Select the desired AD
+- b. Select the desired GPU shape (either VM or BM)
+- c. Specify a GPU-compatible Oracle Linux image The latest Oracle Linux Image will automatically be GPU enabled.
+- d. Select the Cluster Network VCN and Public Subnet 
+- e. Copy-paste your public ssh key 
+- f. Click Create.
 3. Wait for the instance to provision then log into the instance via:
 ```
 ssh opc@<public ip> -i <private key> 
@@ -166,11 +224,11 @@ We will connect through an SSH tunnel to the instance. On your machine, connect 
 ssh -L 5901:127.0.0.1:5901 opc@public_ip
 ```
 You can now connect using any VNC viewer using localhost:N as VNC server and the password you set during the vnc installation. You can chose a VNC client that you prefer or use this guide to install on your local machine:
-- [Windows - TigerVNC] (https://github.com/TigerVNC/tigervnc/wiki/Setup-TigerVNC-server-%28Windows%29)
-- [MacOS/Windows - RealVNC] (https://www.realvnc.com/en/connect/download/)
+- [Windows - TigerVNC](https://github.com/TigerVNC/tigervnc/wiki/Setup-TigerVNC-server-%28Windows%29)
+- [MacOS/Windows - RealVNC](https://www.realvnc.com/en/connect/download/) 
 
 ## Installing Fluent
-### Adding specific librairies
+### Adding specific libraries
 **If you used the CFD Ready Cluster from marketplace, this step is not needed.**
 There are a couple of library that need to be added to the Oracle Linux image on all the compute nodes.
 ```
