@@ -1,6 +1,6 @@
 # <img src="https://github.com/oci-hpc/oci-hpc-runbook-fluent/blob/master/fluent_logo.png" height="60"> ANSYS Fluent Runbook
 
-## Table of Contents
+# Table of Contents
 - [Launch Cluster Network Steps](#launch-cluster-network-steps)
 - [Creation of Cluster Network through Marketplace](#creation-of-cluster-network-through-marketplace)
 - [Creation of Cluster Network through Manual Configuration](#creation-of-cluster-network-through-manual-configuration)
@@ -16,13 +16,13 @@
 - [Running Fluent](#running-fluent)
 - [Benchmark Example](#benchmark-example)
 
-## Launch Cluster Network Steps
+# Launch Cluster Network Steps
 There are many ways to launch an HPC Cluster Network, this solutions guide will cover two different methods:
 
 Via Marketplace
 Manually Depending on your OS, you will want to go with a specific method. If the HPC Cluster Network marketplace image or our OCI HPC CN Terraform scripts are used, this is for Oracle Linux 7 only. If you want to use CentOS, Ubuntu or another OS, manual configuration is required.
 
-### Creation of Cluster Network through Marketplace
+## Creation of Cluster Network through Marketplace
 Marketplace holds applications and images that can be deployed with our infrastructure. For customers that want to use Oracle Linux, an HPC Cluster Network image is available and can be launched from directly within marketplace. We suggest launching the [CFD Ready Cluster](https://cloudmarketplace.oracle.com/marketplace/en_US/listing/75645211) that will contain librairies needed for CFD.
 
 1. Within marketplace, select **Get App** at the top right.
@@ -41,7 +41,7 @@ Marketplace holds applications and images that can be deployed with our infrastr
 6. Navigate to <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/tf_actions.png" height="28"> then click Apply. This will launch the CN provisioning.
 7. Wait until the job shows <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/succeeded.png" height="42"> then navigate to <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/outputs.png" height="38"> to obtain the bastion and compute node private IP’s <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/bastion_private_ip.png" height="50">.
 
-### Creation of Cluster Network through Manual Configuration
+## Creation of Cluster Network through Manual Configuration
 Marketplace holds applications and images that can be deployed with our infrastructure. For customers that want to use Oracle Linux, you can manually create a cluster network as follows:
 1. Select the OCI Region on the top right.
 
@@ -112,7 +112,7 @@ for i in `nmap -sL Private_Subnet_CIDR | grep "Nmap scan report for" | grep ")" 
 ips=`cat /tmp/ips`
 /opt/oci-hpc/setup/provision/HPC_PROVISION/hpc_provision_cluster_nodes.sh -p -i /home/opc/.ssh/id_rsa $ips 
 ```
-## Access your Cluster
+# Access your Cluster
 The public IP address of the bastion can be found on the lower left menu under <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/outputs.png" height="35">. If you navigate to your instances in the main menu, you will also find your bastion instance as well as the public IP.
 
 The Private Key to access the machines can also be found there. Copy the text in a file on your machine, let's say/home/user/key:
@@ -120,10 +120,10 @@ The Private Key to access the machines can also be found there. Copy the text in
 chmod 600 /home/user/key 
 ssh -i /home/user/key opc@ipaddress 
 ```
-## Configure Visualization
+# Configure Visualization
 HPC workloads often require visualization tools for scheduling, monitoring or analyzing the output of the simulations. In these scenarios, it is often desired to create a GPU visualization node for optimal resolution and post processing. A GUI is not installed by default on OCI instances; however, one can be configured easily using VNC or X11 remote display protocol. The subsections below will walk through how to create a GPU visualization node in the public subnet using TurboVNC and OpenGL.
 
-### Setting Up a VNC on your bastion
+## Setting Up a VNC on your bastion
 By default, the only access to the Oracle Linux machine is through SSH in a console mode. If you want to see the graphical interface, you will need to set up a VNC connection. The following script will work for the default user opc. The password for the vnc session is set as "HPC_oci1" but it can be edited in the next set of commands. If you are not currently connected to the headnode via SSH, please do so as these commands need to be run on the headnode.
 ```
 sudo yum -y groupinstall "Server with GUI"
@@ -140,7 +140,7 @@ chmod 600 /home/opc/.vnc/passwd
 sudo systemctl start vncserver@:1.service
 sudo systemctl enable vncserver@:1.service
 ```
-### Add a GPU instance
+## Add a GPU instance
 The below steps are taken Using OpenGL to Enhance GPU Use cases on OCI - refer to the blog for more details.
 1. Within the Console, navigate to Compute then Instances.
 
@@ -217,7 +217,7 @@ sudo firewall-cmd --reload
 ```
 15. Open TurboVNC or TigerVNC client. Enter the IP address connection as :1
 
-## Accessing a VNC
+# Accessing a VNC
 We will connect through an SSH tunnel to the instance. On your machine, connect using ssh PORT below will be the number that results from 5900 + N. N is the display number, if the output for N was 1, PORT is 5901, if the output was 9, PORT is 5909 public_ip is the public IP address of the headnode, which is running the VNC server. If you used the previous instructions, port will be 5901
 ```
 ssh -L 5901:127.0.0.1:5901 opc@public_ip
@@ -226,14 +226,14 @@ You can now connect using any VNC viewer using localhost:N as VNC server and the
 - [Windows - TigerVNC](https://github.com/TigerVNC/tigervnc/wiki/Setup-TigerVNC-server-%28Windows%29)
 - [MacOS/Windows - RealVNC](https://www.realvnc.com/en/connect/download/) 
 
-## Installing Fluent
-### Adding specific libraries
+# Installing Fluent
+## Adding specific libraries
 **If you used the CFD Ready Cluster from marketplace, this step is not needed.**
 There are a couple of library that need to be added to the Oracle Linux image on all the compute nodes.
 ```
 sudo yum -y install libGLU libXrender.x86_64 libXtst.x86_64 motif-2.3.4-14.el7_5.x86_64 mesa-libGLU-9.0.0-4.el7.x86_64  mesa-libGLU mesa-libGL motif axel fontconfig freetype freetype-devel fontconfig-devel libXext libXrender-devel.x86_64 libXrender.x86_64 mesa-libGL.x86_64
 ```
-### Download the binaries
+## Download the binaries
 You can download the FLUENT installer from the ANSYS website and push it to your machine using scp.
 ```
 scp /path/own/machine/FLUID_version.zip opc@1.1.1.1:/home/opc/
@@ -262,7 +262,7 @@ Untar or unzip the installer depending on your version
 tar -xf installer.tgz
 unzip installer.tgz
 ```
-### Install
+## Install
 Launch the installer on a shared location. By default, an HPC cluster has a NFS-share or a Gluster-share mounted on all the compute nodes. Add the IP address to access the license server.
 ```
 mkdir /mnt/nfs-share/install/fluent
@@ -275,7 +275,7 @@ Finally, you can add fluent to your path like this
 export PATH=$SHARE_DIR/applications/ansys_inc/v$VERS/fluent/bin:$PATH
 echo export PATH=$SHARE_DIR/applications/ansys_inc/v$VERS/fluent/bin:'$PATH' | sudo tee /etc/profile.d/ansys.sh
 ```
-## Running Fluent
+# Running Fluent
 Running Fluent is pretty straightforward: You can either start the GUI if you have a VNC session started with
 ```
 /mnt/gluster-share/install/fluent/v190/fluent/bin/fluent
@@ -300,6 +300,6 @@ fluentbench.pl -ssh -noloadchk -casdat=$modelname -t$N -cnf=machinefile -mpi=int
 ```
 Intel is the prefered MPI for ANSYS Fluent on OCI.
 
-## Benchmark Example
+# Benchmark Example
 Performances of Fluent are often measured using the Formula 1 benchmark with 140 Millions cells. The next graph is showing how using more nodes impact the runtime, with a scaling really close to 100%. RDMA network only start to differentiate versus regular TCP runs if the Cells / Core ratio starts to go down. Here is a comparison with AWS C5n HPC machines.
 <img src="https://github.com/oci-hpc/oci-hpc-runbook-fluent/blob/master/fluent_bench.png" height="500">
