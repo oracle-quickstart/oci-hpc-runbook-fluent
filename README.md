@@ -64,6 +64,7 @@ https://console.us-phoenix-1.oraclecloud.com/object-storage/buckets/hpc/HPC_BENC
 <details>
   <summary>If you use the CFD Ready Cluster, it already comes preinstalled with prerequisite libraries:
 </summary>
+ 
 •	libGLU 
  
 •	libXrender.x86_64 
