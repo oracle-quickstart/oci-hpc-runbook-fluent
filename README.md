@@ -10,16 +10,9 @@ This Runbook will take you through the process of deploying an ANSYS Fluent clus
 <img src="https://github.com/oci-hpc/oci-hpc-runbook-fluent/blob/master/fluent_image.jpeg" height="300" >
  </p>
  
-**Table of Contents**
-- [Introduction](#introduction)
-- [Architecture](#architecture)
-  - [Baseline Infrastructure](#baseline-infrastructure)
-  - [Optional Infrastructure](#optional-infrastructure)
-- [Launch Cluster Network Steps](#launch-cluster-network-steps)
-- [Running Fluent](#running-fluent)
-- [Benchmark Example](#benchmark-example)
 
 # Architecture
+![](https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/arch.png "Architecture for Running StarCCM+ in OCI")
 The architecture for this runbook is as follow, we have one small machine (bastion) that you will connect into. The compute nodes will be on a separate private network linked with RDMA RoCE v2 networking. The bastion will be accesible through SSH from anyone with the key (or VNC if you decide to enable it). Compute nodes will only be accessible through the bastion inside the network. This is made possible with 1 Virtual Cloud Network with 2 subnets, one public and one private.
 
 ## Baseline Infrastructure
@@ -32,8 +25,6 @@ Cluster Networks are supported in the following regions.  In each case, we recom
 *	Compute Nodes
   *	Bastion Host in a Public Subnet
   *	HPC Compute Nodes in Private Subnet
-
-![](https://github.com/oci-hpc/oci-hpc-runbook-shared/blob/master/images/arch.png "Architecture for Running StarCCM+ in OCI")
 
 The above baseline infrastructure provides the following specifications:
 -	Networking
