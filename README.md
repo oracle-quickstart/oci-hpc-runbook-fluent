@@ -110,7 +110,7 @@ https://github.com/oci-hpc/oci-hpc-clusternetwork/blob/CFD_ansible/playbooks/cfd
  ```
  ./INSTALL -silent -install_dir "/nfs/scratch/fluent" -fluent -licserverinfo 2325:1055:129.146.96.65
  ```
-## Step 6. If you want to add Ansys Fluent to your environmental variables, run the following commands:![image](https://user-images.githubusercontent.com/31706671/122606400-ded94080-d046-11eb-973c-af5c2f4867e2.png)
+## Step 6. If you want to add Ansys Fluent to your environmental variables, run the following commands:
 
 ```
 echo export PATH=/nfs/scratch/fluent/v202/fluent/bin/:$PATH | sudo tee -a ~/.bashrc
