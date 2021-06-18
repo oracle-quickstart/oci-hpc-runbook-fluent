@@ -45,6 +45,7 @@ https://console.us-phoenix-1.oraclecloud.com/object-storage/buckets/hpc/HPC_APPS
   <summary>For more models, check here:</summary>
 https://console.us-phoenix-1.oraclecloud.com/object-storage/buckets/hpc/HPC_BENCHMARKS/objects 
 </details>
+## Step 2. 2.	Install the models and fluent version in /nfs/scratch or /mnt/nfs-share  (path will depend on the image version you are using)
 
 
 
