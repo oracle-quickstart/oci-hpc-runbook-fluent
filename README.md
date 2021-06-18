@@ -65,22 +65,39 @@ https://console.us-phoenix-1.oraclecloud.com/object-storage/buckets/hpc/HPC_BENC
   <summary>If you use the CFD Ready Cluster, it already comes preinstalled with prerequisite libraries:
 </summary>
 •	libGLU 
+ 
 •	libXrender.x86_64 
+ 
 •	libXtst.x86_64 
+ 
 •	motif-2.3.4-14.el7_5.x86_64 
+ 
 •	mesa-libGLU-9.0.0-4.el7.x86_64  
+ 
 •	mesa-libGLU 
+ 
 •	mesa-libGL 
+ 
 •	motif 
+ 
 •	axel 
+ 
 •	fontconfig 
+ 
 •	freetype 
+ 
 •	freetype-devel 
+ 
 •	fontconfig-devel 
+ 
 •	libXext 
+ 
 •	libXrender-devel.x86_64 
+ 
 •	libXrender.x86_64 
+ 
 •	mesa-libGL.x86_64
+ 
 </details>
 
 If you don’t have the pre-requisites installed, you can also run the following script from the bastion:
