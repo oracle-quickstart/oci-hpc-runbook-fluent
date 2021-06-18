@@ -83,43 +83,84 @@ https://console.us-phoenix-1.oraclecloud.com/object-storage/buckets/hpc/HPC_BENC
 •	mesa-libGL.x86_64
 </details>
 
-<details>
-  <summary>If you don’t have the pre-requisites installed, you can also run the following script from the bastion:
-</summary>
+If you don’t have the pre-requisites installed, you can also run the following script from the bastion:
 https://github.com/oci-hpc/oci-hpc-clusternetwork/blob/CFD_ansible/playbooks/cfd.yml via
  ```
  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook /home/opc/playbooks/cfd.yml
  ```
-</details>
+## Step 5. Launch a silent install via the following command, using the IP of your license server and 2325 / 1055 are the ANSYS License Interconnect and FlexNet ports, respectively.
+ ```
+ ./INSTALL -silent -install_dir "/nfs/scratch/fluent" -fluent -licserverinfo 2325:1055:129.146.96.65
+ ```
+## Step 6. If you want to add Ansys Fluent to your environmental variables, run the following commands:![image](https://user-images.githubusercontent.com/31706671/122606400-ded94080-d046-11eb-973c-af5c2f4867e2.png)
 
-
-
-Running Fluent is pretty straightforward: You can either start the GUI if you have a VNC session started with
 ```
-/mnt/gluster-share/install/fluent/v190/fluent/bin/fluent
+echo export PATH=/nfs/scratch/fluent/v202/fluent/bin/:$PATH | sudo tee -a ~/.bashrc
 ```
-To specify the host you need to run on, you need to create a machinefile. You can generate it as follow, or manually. Format is hostname:corenumber.
+```
+source ~/.bashrc
+```
+```
+- hosts: compute
+  tasks:
+  - name: fluent install
+    lineinfile:
+      path: /home/opc/.bashrc
+      line: export PATH=/nfs/scratch/fluent/v202/fluent/bin/:$PATH
+      create: yes
+```
+
+## Step 7. Create a machine file in either /nfs/scratch or /mnt-nfs-share
 ```
 sed 's/$/:36/' /etc/opt/oci-hpc/hostfile > machinefile
 ```
-To run on multiple nodes, place the model on the share drive (Ex:/mnt/nfs-share/work/).
-Example provided here is to run any of the benchmark model provided on the ANSYS website. You can add it to object storage like the installer and download it or scp it to the machine.
+
+## Step 8. To set your own flags, modify each mpirun.fl file in the fluent folder with your own flags.
+1. Replace: 
 ```
-wget https://objectstorage.us-phoenix-1.oraclecloud.com/p/qwbdhqwdhqh/n/tenancy/b/bucket/o/f1_racecar_140m.tar  -O - | tar x
-mkdir f1_racecar_140m
-mv bench/fluent/v6/f1_racecar_140m/cas_dat/* f1_racecar_140m/
-gunzip f1_racecar_140m/*
-rm -rf bench/
+FS_MPIRUN_FLAGS="$FS_MPIRUN_FLAGS -genv I_MPI_ADJUST_REDUCE 2  -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_ADJUST_BCAST 1"
+```
+To: 
+```
+FS_MPIRUN_FLAGS="$FLUENT_INTEL_MPIRUN_FLAGS -genv I_MPI_ADJUST_REDUCE 2 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_ADJUST_BCAST 1"
+```
+2. Export the environmental variables flag
+```
+echo export FLUENT_INTEL_MPIRUN_FLAGS="<<< your flags >>>"
+```
+Example using Intel 2018 Flags: 
+```
+echo export FLUENT_INTEL_MPIRUN_FLAGS='"-iface enp94s0f0 -genv I_MPI_FABRICS=shm:dapl -genv DAT_OVERRIDE=/etc/dat.conf -genv I_MPI_DAT_LIBRARY=/usr/lib64/libdat2.so -genv I_MPI_DAPL_PROVIDER=ofa-v2-cma-roe-enp94s0f0 -genv I_MPI_FALLBACK=0 -genv I_MPI_PIN_PROCESSOR_LIST=0-35 -genv I_MPI_PROCESSOR_EXCLUDE_LIST=36-71"' | sudo tee -a ~/.bashrc
+```
+<details>
+  <summary>Refer to the runbook and blog for more flags and guidance: 
+</summary>
+https://blogs.oracle.com/cloud-infrastructure/running-applications-on-oracle-cloud-using-cluster-networking
+</details>
+
+## Step 9: If setting the flags in step 8 is too annoying, you can also use -mpiopt flag when you run fluent to set the flags.
+```
+-mpiopt="-iface enp94s0f0 -genv I_MPI_FABRICS shm:dapl -genv DAT_OVERRIDE /etc/dat.conf -genv I_MPI_DAT_LIBRARY /usr/lib64/libdat2.so -genv I_MPI_DAPL_PROVIDER ofa-v2-cma-roe-enp94s0f0 -genv I_MPI_FALLBACK 0 -genv I_MPI_FALLBACK=0"![image](https://user-images.githubusercontent.com/31706671/122606828-92423500-d047-11eb-9d2b-da4167a19928.png)
 ```
 
-Now that you have set up the model, you can run it with the following command (change the modelname and core number):
+## Step 10: Within the work folder, set the following variables and run fluent on the desired number of cores. 
+Note that this script uses Intel MPI – it is recommended to use Intel MPI for Ansys Fluent on OCI HPC.
 ```
 modelname=f1_racecar_140m
-N=288
-fluentbench.pl -ssh -noloadchk -casdat=$modelname -t$N -cnf=machinefile -mpi=intel
+N=<number of cores>
 ```
+```
+fluentbench.pl -ssh -noloadchk -casdat=$modelname -t$N -cnf=machinefile -mpi=intel -mpiopt="-iface enp94s0f0 -genv I_MPI_FABRICS shm:dapl -genv DAT_OVERRIDE /etc/dat.conf -genv I_MPI_DAT_LIBRARY /usr/lib64/libdat2.so -genv I_MPI_DAPL_PROVIDER ofa-v2-cma-roe-enp94s0f0 -genv I_MPI_FALLBACK 0 -genv I_MPI_FALLBACK=0"![image]
+```
+Note: You can kill stopped jobs via kill -9 $(jobs -p)
 
-Intel is the prefered MPI for ANSYS Fluent on OCI. 
+## Step 11: The output of the simulation produces the following files:
+a.	.out file – shows the output of the run, including the solver rating, number of seconds per iteration and speed
+b.	.log file – shows the history of the benchmark run
+c.	.trn – shows the transcript of the run
+
+You can plot the solver rating, speed and calculate the efficiency at each core count you run, and then plot to determine the optimal parameters to run at.
+
 
 # Benchmark Example
 
