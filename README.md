@@ -35,6 +35,22 @@ The above baseline infrastructure provides the following specifications:
     -	384 GB memory per node
 
 # Phase 1. Run Fluent
+## Step 1. Locate the Ansys Fluent version and models you want to use from object storage.
+1. See table below for the most common ones.
+<details>
+  <summary>For more Fluent versions, check here:</summary>
+https://console.us-phoenix-1.oraclecloud.com/object-storage/buckets/hpc/HPC_APPS/objects 
+</details>
+<details>
+  <summary>For more models, check here:</summary>
+https://console.us-phoenix-1.oraclecloud.com/object-storage/buckets/hpc/HPC_BENCHMARKS/objects 
+</details>
+
+
+
+
+
+
 Running Fluent is pretty straightforward: You can either start the GUI if you have a VNC session started with
 ```
 /mnt/gluster-share/install/fluent/v190/fluent/bin/fluent
