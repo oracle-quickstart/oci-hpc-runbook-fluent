@@ -174,7 +174,9 @@ Note: You can kill stopped jobs via kill -9 $(jobs -p)
 
 ## Step 11: The output of the simulation produces the following files:
 a.	.out file – shows the output of the run, including the solver rating, number of seconds per iteration and speed
+
 b.	.log file – shows the history of the benchmark run
+
 c.	.trn – shows the transcript of the run
 
 You can plot the solver rating, speed and calculate the efficiency at each core count you run, and then plot to determine the optimal parameters to run at.
