@@ -191,16 +191,6 @@
       shell: "sed 's/$/:36/' /etc/opt/oci-hpc/hostfile > machinefile"
       args:
         chdir: "/nfs/scratch/fluent/work"
-    # - name: export bashrc
-    #   shell:  "echo export PATH=/nfs/scratch/fluent/install/v{{fluent_version}}/fluent/bin:'$PATH' >> ~/.bashrc"
-    #   # ansible.builtin.shell: echo 'export PATH={{cluster_nfs_path}}/fluent/install/v202/fluent/fluent20.2.0/bin/fluent:$PATH' >> ~/.bashrc
-
-    # - name: export ansys.sh
-    #   shell: "echo PATH=/nfs/scratch/fluent/install/v{{fluent_version}}/fluent/bin:'$PATH' >> /etc/profile.d/ansys.sh"
-    #   # ansible.builtin.shell: echo 'PATH={{cluster_nfs_path}}/fluent/install/v202/fluent/fluent20.2.0/bin/fluent:$PATH' >> /etc/profile.d/ansys.sh
-
-    # - name: source ~/.bashrc
-    #   shell: "source ~/.bashrc"
 
 
 
