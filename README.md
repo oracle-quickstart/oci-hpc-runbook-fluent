@@ -117,18 +117,6 @@ The above baseline infrastructure provides the following specifications:
 (show how to put object into bucket and get PAR to put into schema.yaml
 
 ### Step 2. To set your own flags, modify each mpirun.fl file in the fluent folder with your own flags.
-1. Replace: 
-```
-FS_MPIRUN_FLAGS="$FS_MPIRUN_FLAGS -genv I_MPI_ADJUST_REDUCE 2  -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_ADJUST_BCAST 1"
-```
-To: 
-```
-FS_MPIRUN_FLAGS="$FLUENT_INTEL_MPIRUN_FLAGS -genv I_MPI_ADJUST_REDUCE 2 -genv I_MPI_ADJUST_ALLREDUCE 2 -genv I_MPI_ADJUST_BCAST 1"
-```
-2. Export the environmental variables flag
-```
-echo export FLUENT_INTEL_MPIRUN_FLAGS="<<< your flags >>>"
-```
 Example using Intel 2018 Flags: 
 ```
 echo export FLUENT_INTEL_MPIRUN_FLAGS='"-iface enp94s0f0 -genv I_MPI_FABRICS=shm:dapl -genv DAT_OVERRIDE=/etc/dat.conf -genv I_MPI_DAT_LIBRARY=/usr/lib64/libdat2.so -genv I_MPI_DAPL_PROVIDER=ofa-v2-cma-roe-enp94s0f0 -genv I_MPI_FALLBACK=0 -genv I_MPI_PIN_PROCESSOR_LIST=0-35 -genv I_MPI_PROCESSOR_EXCLUDE_LIST=36-71"' | sudo tee -a ~/.bashrc
@@ -143,7 +131,6 @@ https://blogs.oracle.com/cloud-infrastructure/running-applications-on-oracle-clo
 ```
 -mpiopt="-iface enp94s0f0 -genv I_MPI_FABRICS shm:dapl -genv DAT_OVERRIDE /etc/dat.conf -genv I_MPI_DAT_LIBRARY /usr/lib64/libdat2.so -genv I_MPI_DAPL_PROVIDER ofa-v2-cma-roe-enp94s0f0 -genv I_MPI_FALLBACK 0 -genv I_MPI_FALLBACK=0"![image](https://user-images.githubusercontent.com/31706671/122606828-92423500-d047-11eb-9d2b-da4167a19928.png)
 ```
-
 ### Step 4: Within the work folder, set the following variables and run fluent on the desired number of cores. 
 Note that this script uses Intel MPI – it is recommended to use Intel MPI for Ansys Fluent on OCI HPC.
 ```
@@ -151,7 +138,7 @@ modelname=f1_racecar_140m
 N=<number of cores>
 ```
 ```
-fluentbench.pl -ssh -noloadchk -casdat=$modelname -t$N -cnf=machinefile -mpi=intel -mpiopt="-iface enp94s0f0 -genv I_MPI_FABRICS shm:dapl -genv DAT_OVERRIDE /etc/dat.conf -genv I_MPI_DAT_LIBRARY /usr/lib64/libdat2.so -genv I_MPI_DAPL_PROVIDER ofa-v2-cma-roe-enp94s0f0 -genv I_MPI_FALLBACK 0 -genv I_MPI_FALLBACK=0"![image]
+/nfs/scratch/fluent/install/v{{VersionNumber}/fluent/bin/fluentbench.pl -ssh -noloadchk -casdat=$modelname -t$N -cnf=machinefile -mpi=intel -mpiopt="-iface enp94s0f0 -genv I_MPI_FABRICS shm:dapl -genv DAT_OVERRIDE /etc/dat.conf -genv I_MPI_DAT_LIBRARY /usr/lib64/libdat2.so -genv I_MPI_DAPL_PROVIDER ofa-v2-cma-roe-enp94s0f0 -genv I_MPI_FALLBACK 0 -genv I_MPI_FALLBACK=0"
 ```
 Note: You can kill stopped jobs via kill -9 $(jobs -p)
 
@@ -163,7 +150,6 @@ b.	.log file – shows the history of the benchmark run
 c.	.trn – shows the transcript of the run
 
 You can plot the solver rating, speed and calculate the efficiency at each core count you run, and then plot to determine the optimal parameters to run at.
-
 
 # Benchmark Example
 
