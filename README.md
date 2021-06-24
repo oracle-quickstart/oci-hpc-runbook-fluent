@@ -112,24 +112,12 @@ The above baseline infrastructure provides the following specifications:
     -	384 GB memory per node
 
 ## Phase 1. Run Fluent
+
 ### Step 1. Locate the Ansys Fluent version and models you want to use from object storage.
-1. See table below for the most common ones.
-<details>
-  <summary>For more Fluent versions, check here:</summary>
-https://console.us-phoenix-1.oraclecloud.com/object-storage/buckets/hpc/HPC_APPS/objects 
-</details>
-<details>
-  <summary>For more models, check here:</summary>
-https://console.us-phoenix-1.oraclecloud.com/object-storage/buckets/hpc/HPC_BENCHMARKS/objects 
-</details>
 
-### Step 2. Install the models and fluent version in /nfs/scratch or /mnt/nfs-share  (path will depend on the image version you are using)
-
-### Step 3. Prepare the model, as follows:
+### Step 2. Prepare the f1_racecar_140m model, as follows:
 1. Create a directory in the work folder and then move the cas_dat folder contents into this newly created folder. 
-   Example:
    ```
-   mkdir f1_racecar_140m
    mv bench/fluent/v6/f1_racecar_140m/cas_dat/* f1_racecar_140m/
    ```
 2. Gunzip the f1_racecar_140m folder and remove the bench folder.
@@ -137,52 +125,7 @@ https://console.us-phoenix-1.oraclecloud.com/object-storage/buckets/hpc/HPC_BENC
    gunzip f1_racecar_140m/*
    rm -rf bench/
    ```
-### Step 4.Launch an HPC cluster from marketplace, and install ansys / models from object storage par’s.
-<details>
-  <summary>If you use the CFD Ready Cluster, it already comes preinstalled with prerequisite libraries:
-</summary>
- 
-•	libGLU 
- 
-•	libXrender.x86_64 
- 
-•	libXtst.x86_64 
- 
-•	motif-2.3.4-14.el7_5.x86_64 
- 
-•	mesa-libGLU-9.0.0-4.el7.x86_64  
- 
-•	mesa-libGLU 
- 
-•	mesa-libGL 
- 
-•	motif 
- 
-•	axel 
- 
-•	fontconfig 
- 
-•	freetype 
- 
-•	freetype-devel 
- 
-•	fontconfig-devel 
- 
-•	libXext 
- 
-•	libXrender-devel.x86_64 
- 
-•	libXrender.x86_64 
- 
-•	mesa-libGL.x86_64
- 
-</details>
-
-If you don’t have the pre-requisites installed, you can also run the following script from the bastion:
-https://github.com/oci-hpc/oci-hpc-clusternetwork/blob/CFD_ansible/playbooks/cfd.yml via
- ```
- ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook /home/opc/playbooks/cfd.yml
- ```
+   
 ### Step 5. Launch a silent install via the following command, using the IP of your license server and 2325 / 1055 are the ANSYS License Interconnect and FlexNet ports, respectively.
  ```
  ./INSTALL -silent -install_dir "/nfs/scratch/fluent" -fluent -licserverinfo 2325:1055:129.146.96.65
