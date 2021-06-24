@@ -128,7 +128,7 @@ The above baseline infrastructure provides the following specifications:
    
 ### Step 5. Launch a silent install via the following command, using the IP of your license server and 2325 / 1055 are the ANSYS License Interconnect and FlexNet ports, respectively.
  ```
- ./INSTALL -silent -install_dir "/nfs/scratch/fluent" -fluent -licserverinfo 2325:1055:129.146.96.65
+ ./INSTALL -silent -install_dir '/nfs/scratch/fluent/install' -fluent -licserverinfo {{fluent_license_port}}:{{fluent_flexnet_port}}
  ```
 ### Step 6. If you want to add Ansys Fluent to your environmental variables, run the following commands:
 
