@@ -461,7 +461,7 @@ variables:
     required: true
     minimum: 50
     title: "Size of the boot volume in GB"
-    default: 150
+    default: 200
     description: "Boot volume size in GB of each compute node" 
 
   use_marketplace_image:
