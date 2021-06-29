@@ -59,10 +59,6 @@ user_ocid            = "<user_ocid>"
 fingerprint          = "<finger_print>"
 private_key_path     = "<pem_private_key_path>"
 
-# database
-ATP_password           = "<ATP_user_password>"
-ATP_data_guard_enabled = false # set the value to true only when you want to enable standby and then re-run terraform apply
-
 # Region
 region = "<oci_region>"
 
@@ -70,19 +66,24 @@ region = "<oci_region>"
 ad = "<availablity doman>" # for example "GrCH:US-ASHBURN-AD-1"
 
 # Bastion 
-bastion_ad               = "<availablity doman>" # for example "GrCH:US-ASHBURN-AD-1"
-bastion_boot_volume_size = "<bastion_boot_volume_size>" # for example 50
-bastion_shape            = "<bastion_shape>" # for example "VM.Standard.E3.Flex"
-boot_volume_size         = "<boot_volume_size>" # for example 100
-node_count               = "<node_count>" # for example 2
-ssh_key                  = "<ssh_key>"
-targetCompartment        = "<targetCompartment>" 
-use_custom_name          = false
-use_existing_vcn         = false
-use_marketplace_image    = true
-use_standard_image       = true
-cluster_network          = false
-instance_pool_shape      = "<instance_pool_shape>" # for example VM.Standard.E3.Flex
+bastion_ad                = "<availablity doman>" # for example "GrCH:US-ASHBURN-AD-1"
+bastion_boot_volume_size  = "<bastion_boot_volume_size>" # for example 1000
+bastion_shape             = "<bastion_shape>" # for example "VM.Standard.E3.Flex"
+
+boot_volume_size          = "<boot_volume_size>" # for example 100
+cluster_block_volume_size = 1000
+scratch_nfs_type_pool     = "block"
+node_count                = "<node_count>" # for example 2
+ssh_key                   = "<ssh_key>"
+targetCompartment         = "<targetCompartment>" 
+use_custom_name           = false
+use_existing_vcn          = false
+use_marketplace_image     = true
+use_standard_image        = true
+cluster_network           = false
+instance_pool_shape       = "<instance_pool_shape>" # for example VM.Standard.E3.Flex
+fluent_binaries           = "<fluent_binaries>" # for example https://objectstorage.us-phoenix-1.oraclecloud.com/p/(...)/n/hpc/b/HPC_APPS/o/FLUIDS_2020R2_LINX64.tar"
+fluent_license_server_ip = "<fluent_license_server_ip>"
 
 ````
 
