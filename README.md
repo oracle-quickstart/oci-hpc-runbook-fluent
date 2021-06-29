@@ -28,6 +28,10 @@ If you don't have the required permissions and quota, contact your tenancy admin
 3. Select the region where you want to deploy the stack.
 
 4. Follow the on-screen prompts and instructions to create the stack.
+   a. If you choose a shape that doesn't have NVMe, please add additional storage
+   <p align="center">
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/images/Additional%20Storage.png" height="300" >
+ </p>
 
 5. After creating the stack, click **Terraform Actions**, and select **Plan**.
 
