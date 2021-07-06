@@ -5,6 +5,12 @@ This Runbook will take you through the process of deploying an ANSYS Fluent clus
 
 Fluent software contains the broad, physical modeling capabilities needed to model flow, turbulence, heat transfer and reactions for industrial applications. These range from air flow over an aircraft wing to combustion in a furnace, from bubble columns to oil platforms, from blood flow to semiconductor manufacturing and from clean room design to wastewater treatment plants. Fluent spans an expansive range, including special models, with capabilities to model in-cylinder combustion, aero-acoustics, turbomachinery and multiphase systems. [Ansys Fluent Website](https://www.ansys.com/products/fluids/ansys-fluent)
 
+For details of the architecture, see [_High Performance Computing: Ansys Fluent on Oracle Cloud Infrastructure_](https://docs.oracle.com/en/solutions/hpc-fluent/)
+
+## Architecture Diagram
+
+![](./images/fluent_architecture.png)
+
 <p align="center">
 <img src="https://github.com/oci-hpc/oci-hpc-runbook-fluent/blob/master/fluent_image.jpeg" height="300" >
  </p>
