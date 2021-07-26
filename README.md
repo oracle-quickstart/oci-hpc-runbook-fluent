@@ -1,4 +1,4 @@
-# <img src="https://github.com/oci-hpc/oci-hpc-runbook-fluent/blob/master/fluent_logo.png" height="60"> ANSYS Fluent Runbook
+# <img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/fluent_logo.png" height="60"> ANSYS Fluent Runbook
 
 # Introduction
 This Runbook will take you through the process of deploying an ANSYS Fluent cluster on Oracle Cloud with low latency networking between the compute nodes. Running ANSYS Fluent on Oracle Cloud is quite straightforward, follow along this guide for all the tips and tricks.
@@ -187,5 +187,5 @@ Performances of Fluent are often measured using the Formula 1 benchmark with 140
 
 <p align="center">
  
-<img src="https://github.com/oci-hpc/oci-hpc-runbook-fluent/blob/master/fluent_bench.png" height="500" >
+<img src="https://github.com/oracle-quickstart/oci-hpc-runbook-fluent/blob/main/fluent_bench.png" height="500" >
  </p>
