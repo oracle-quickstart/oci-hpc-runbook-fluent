@@ -1,15 +1,11 @@
-## Copyright (c) 2021, Oracle and/or its affiliates.
-## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
-
 resource "oci_core_volume" "bastion_volume" {
   count               = var.bastion_block ? 1 : 0
   availability_domain = var.bastion_ad
   compartment_id      = var.targetCompartment
   display_name        = "${local.cluster_name}-bastion-volume"
 
-  size_in_gbs  = var.bastion_block_volume_size
-  vpus_per_gb  = split(".", var.bastion_block_volume_performance)[0]
-  defined_tags = { "${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
+  size_in_gbs = var.bastion_block_volume_size
+  vpus_per_gb = split(".", var.bastion_block_volume_performance)[0]
 }
 
 resource "oci_core_volume_attachment" "bastion_volume_attachment" {
@@ -57,7 +53,6 @@ resource "oci_core_instance" "bastion" {
   create_vnic_details {
     subnet_id = local.bastion_subnet_id
   }
-  defined_tags = { "${oci_identity_tag_namespace.ArchitectureCenterTagNamespace.name}.${oci_identity_tag.ArchitectureCenterTag.name}" = var.release }
 }
 
 resource "null_resource" "bastion" {
@@ -284,7 +279,8 @@ resource "null_resource" "cluster" {
       nfs_source_path                  = var.nfs_source_path,
       nfs_options                      = var.nfs_options,
       monitoring                       = var.monitoring,
-      hyperthreading                   = var.hyperthreading
+      hyperthreading                   = var.hyperthreading,
+      unsupported                      = var.unsupported
     })
 
     destination = "/home/${var.bastion_username}/autoscaling/tf_init/variables.tf"
