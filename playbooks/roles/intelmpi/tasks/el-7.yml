@@ -1,0 +1,37 @@
+---
+- name: Install MPI 2018
+  become: true 
+  shell: |
+    pssh -i -h /etc/opt/oci-hpc/hostfile.tcp 'wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB'
+    pssh -i -h /etc/opt/oci-hpc/hostfile.tcp 'sudo rpm --import GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB'
+    pssh -i -h /etc/opt/oci-hpc/hostfile.tcp 'sudo yum-config-manager --add-repo=https://yum.repos.intel.com/mpi'
+    pssh -i -h /etc/opt/oci-hpc/hostfile.tcp 'sudo yum install -y intel-mpi-2018.4-057 intel-mpi-samples-2018.4-274'
+    
+
+- name: Install MPI 2019
+  become: true 
+  shell: |
+    pssh -i -h /etc/opt/oci-hpc/hostfile.tcp 'wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB'
+    pssh -i -h /etc/opt/oci-hpc/hostfile.tcp 'sudo rpm --import GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB'
+    pssh -i -h /etc/opt/oci-hpc/hostfile.tcp 'sudo yum-config-manager --add-repo=https://yum.repos.intel.com/mpi'
+    pssh -i -h /etc/opt/oci-hpc/hostfile.tcp 'sudo yum install -y intel-mpi-2019.9-912 intel-mpi-samples-2019.9-304'
+
+- name: Install MPI 2021
+  become: true 
+  shell: |
+    pssh -i -h /etc/opt/oci-hpc/hostfile.tcp 'cat > /tmp/oneAPI.repo << EOF
+    [oneAPI]
+    name=Intel(R) oneAPI repository
+    baseurl=https://yum.repos.intel.com/oneapi
+    enabled=1
+    gpgcheck=1
+    repo_gpgcheck=1
+    gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB
+    EOF
+
+    sudo mv /tmp/oneAPI.repo /etc/yum.repos.d
+    sudo yum -y install intel-hpckit'
+
+
+
+

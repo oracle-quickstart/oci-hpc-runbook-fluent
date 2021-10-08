@@ -1,0 +1,88 @@
+---
+- name: CFD Librairies for main applications
+  become: True
+  yum:
+    name:
+      - pax
+      - libSM
+      - libX11
+      - libXext
+      - libXt
+      - redhat-lsb-core
+      - libGLU
+      - libXrender.x86_64
+      - libXtst.x86_64
+      - motif-2.3.4-14.el7_5.x86_64
+      - mesa-libGLU-9.0.0-4.el7.x86_64
+      - mesa-libGLU
+      - mesa-libGL
+      - motif
+      - fontconfig
+      - fontconfig-devel
+      - libXext
+      - libXrender-devel.x86_64
+      - libXrender.x86_64
+      - mesa-libGL.x86_64
+      - tmux
+      - glibc.i686
+      - zlib.i686
+    state: present
+
+# tasks file for lsdyna 
+
+- name: make lsdyna directory
+  become: true
+  file:
+    path: "/nfs/scratch/lsdyna/install"
+    state: directory
+    owner: opc
+    mode: 0770
+    group: opc
+    recurse: yes
+
+#Install LSDYNA
+- name: download lsdyna binaries
+  get_url:
+    url: "{{lsdyna_binaries}}"
+    dest: "/nfs/scratch/lsdyna/install"
+    mode: 0777
+
+- name: untar lsdyna binaries
+  unarchive: 
+    src: "{{ item }}" 
+    dest: "/nfs/scratch/lsdyna/install" 
+  with_fileglob:
+    - "/nfs/scratch/lsdyna/install/*"
+
+# Post Installation 
+
+- name: make models directory
+  become: true
+  file:
+    path: "/nfs/scratch/lsdyna/models"
+    state: directory
+    owner: opc
+    mode: 0770
+    group: opc
+    recurse: yes
+
+- name: download model 
+  get_url: 
+    url: "https://objectstorage.us-phoenix-1.oraclecloud.com/p/Fq-2sHmhd7WG98G8wLkpYdITwTVHubUmxbhYQf15p_cyqUJnCRlPDbLDyo5wnvAi/n/hpc/b/HPC_BENCHMARKS/o/3cars_shell2_150ms_rev02.tar"
+    dest: "/nfs/scratch/lsdyna/models"
+
+- name: untar model
+  unarchive:  
+    src: "{{ item }}" 
+    dest: "/nfs/scratch/lsdyna/models" 
+  with_fileglob:
+    - "/nfs/scratch/lsdyna/models/*"
+
+
+
+
+
+
+
+
+

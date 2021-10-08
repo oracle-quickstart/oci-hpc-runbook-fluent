@@ -61,9 +61,9 @@
  
 # Post Installation 
 
-- name: make work directory
+- name: make models directory
   ansible.builtin.file:
-    path: "/nfs/scratch/fluent/work"
+    path: "/nfs/scratch/fluent/models"
     state: directory
     recurse: yes
     owner: opc
@@ -73,19 +73,19 @@
 - name: download model 
   get_url: 
     url: "https://objectstorage.us-phoenix-1.oraclecloud.com/p/mc0PPM-M6qCC7PR5zFwLzom5XXz4YBWo6waCupaMxUQ/n/hpc/b/HPC_BENCHMARKS/o/f1_racecar_140m.tar"
-    dest: "/nfs/scratch/fluent/work"
+    dest: "/nfs/scratch/fluent/models"
     mode: '0777' 
 
 - name: untar model
   unarchive: 
     src: "{{ item }}" 
-    dest: "/nfs/scratch/fluent/work" 
+    dest: "/nfs/scratch/fluent/models" 
   with_fileglob:
-    - "/nfs/scratch/fluent/work/*"
+    - "/nfs/scratch/fluent/models/*"
 
 - name: make f1_racecar_140m directory
   ansible.builtin.file:
-    path: "/nfs/scratch/fluent/work/f1_racecar_140m"
+    path: "/nfs/scratch/fluent/models/f1_racecar_140m"
     state: directory
     recurse: yes
     owner: opc
@@ -95,18 +95,19 @@
 - name: move files into f1_racecar_140m folder
   copy: 
     src: "{{ item }}" 
-    dest: "/nfs/scratch/fluent/work/f1_racecar_140m"
+    dest: "/nfs/scratch/fluent/models/f1_racecar_140m"
   with_fileglob:
-    - "/nfs/scratch/fluent/work/bench/fluent/v6/f1_racecar_140m/cas_dat/*"
+    - "/nfs/scratch/fluent/models/bench/fluent/v6/f1_racecar_140m/cas_dat/*"
 
 - name: gunzip f1_racecar_140m folder
-  shell: "gunzip /nfs/scratch/fluent/work/f1_racecar_140m/*"
+  shell: "gunzip /nfs/scratch/fluent/models/f1_racecar_140m/*"
   args:
-    chdir: "/nfs/scratch/fluent/work/f1_racecar_140m"
+    chdir: "/nfs/scratch/fluent/models/f1_racecar_140m"
 
 - name: delete bench folder
   ansible.builtin.file:
-    path: "/nfs/scratch/fluent/work/bench"
+    path: "/nfs/scratch/fluent/models/bench"
     state: absent
+    
 
 
