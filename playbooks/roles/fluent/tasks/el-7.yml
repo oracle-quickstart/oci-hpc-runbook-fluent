@@ -1,36 +1,8 @@
----
-- name: CFD Librairies for main applications
-  become: True
-  yum:
-    name:
-      - pax
-      - libSM
-      - libX11
-      - libXext
-      - libXt
-      - redhat-lsb-core
-      - libGLU
-      - libXrender.x86_64
-      - libXtst.x86_64
-      - motif-2.3.4-14.el7_5.x86_64
-      - mesa-libGLU-9.0.0-4.el7.x86_64
-      - mesa-libGLU
-      - mesa-libGL
-      - motif
-      - fontconfig
-      - fontconfig-devel
-      - libXext
-      - libXrender-devel.x86_64
-      - libXrender.x86_64
-      - mesa-libGL.x86_64
-      - tmux
-      - glibc.i686
-      - zlib.i686
-    state: present
+--- 
 
 # tasks file for fluent
 
-- name: Create /nfs//fluent/install
+- name: Create /nfs/fluent/install
   become: true
   file:
     path: "/nfs/scratch/fluent/install"
@@ -47,7 +19,7 @@
     mode: 0770
 
 - name: untar fluent binaries
-  unarchive: 
+  ansible.builtin.unarchive:
     src: "{{ item }}" 
     dest: "/nfs/scratch/fluent/install" 
   with_fileglob:
@@ -72,12 +44,12 @@
 
 - name: download model 
   get_url: 
-    url: "https://objectstorage.us-phoenix-1.oraclecloud.com/p/mc0PPM-M6qCC7PR5zFwLzom5XXz4YBWo6waCupaMxUQ/n/hpc/b/HPC_BENCHMARKS/o/f1_racecar_140m.tar"
+    url: "https://objectstorage.us-phoenix-1.oraclecloud.com/p/U-qqaaOPobcElhUrDUyi4PPKnmMItSrSTbYGpmhUlgVYZEY12FdnqfIEq-Xm6AiP/n/hpc/b/HPC_BENCHMARKS/o/f1_racecar_140m.tar" 
     dest: "/nfs/scratch/fluent/models"
     mode: '0777' 
 
 - name: untar model
-  unarchive: 
+  ansible.builtin.unarchive: 
     src: "{{ item }}" 
     dest: "/nfs/scratch/fluent/models" 
   with_fileglob:
