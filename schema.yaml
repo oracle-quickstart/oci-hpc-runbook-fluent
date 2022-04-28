@@ -1,3 +1,6 @@
+## Copyright (c) 2022, Oracle and/or its affiliates. 
+## All rights reserved. The Universal Permissive License (UPL), Version 1.0 as shown at http://oss.oracle.com/licenses/upl
+
 ---
 title: Ansys Fluent
 description: Install Ansys Fluent on an HPC Cluster
@@ -145,6 +148,7 @@ variableGroups:
       - ${marketplace_source_images}
       - ${marketplace_version_id}
       - ${bastion_listing}
+      - ${release}
     visible: false
   - title: "Debug"
     variables: 
